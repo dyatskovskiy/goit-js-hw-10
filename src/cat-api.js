@@ -5,7 +5,6 @@ axios.defaults.headers.common['x-api-key'] =
 export const fetchBreeds = function fetchBreeds() {
   return axios.get('https://api.thecatapi.com/v1/breeds').then(response => {
     if (response.status < 200 || response.status > 299) {
-      throw new Error(response.status);
     }
     return response.data;
   });
@@ -16,7 +15,7 @@ export const fetchCatByBreed = function fetchCatByBreed(breedId) {
     .get(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
     .then(response => {
       if (response.status < 200 || response.status > 299) {
-        throw new Error(response.status);
+        throw new Error(response.statusCode);
       }
       return response.data;
     });
