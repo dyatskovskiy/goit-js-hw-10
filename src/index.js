@@ -8,17 +8,27 @@ import { fetchCatByBreed } from './cat-api';
 
 const select = document.querySelector('.breed-select');
 const catInfo = document.querySelector('.cat-info');
+const loader = document.querySelector('.loader');
 
 const catsSelect = new SlimSelect({
   select: select,
+  settings: {
+    showSearch: false,
+    placeholderText: 'Please, choose a cat!',
+  },
 });
 
-fetchBreeds().then(breeds => renderCatSelectOptions(breeds));
+fetchBreeds()
+  .then(breeds => renderCatSelectOptions(breeds))
+  .catch(err => showError());
 
 select.addEventListener('change', selectChangeHandler);
 
 function selectChangeHandler() {
-  fetchCatByBreed(this.value).then(info => renderCatCard(info));
+  loader.classList.remove('visually-hidden');
+  fetchCatByBreed(this.value)
+    .then(info => renderCatCard(info))
+    .catch(err => showError());
 }
 
 function renderCatSelectOptions(breeds) {
@@ -28,7 +38,10 @@ function renderCatSelectOptions(breeds) {
       value: id,
     };
   });
+  breedProperties.unshift({ text: '', placeholder: true });
   catsSelect.setData(breedProperties);
+  loader.classList.add('visually-hidden');
+  select.classList.remove('visually-hidden');
 }
 
 function renderCatCard(info) {
@@ -45,4 +58,13 @@ function renderCatCard(info) {
     })
     .join('');
   catInfo.innerHTML = markup;
+  catInfo.classList.remove('visually-hidden');
+  loader.classList.add('visually-hidden');
+}
+
+function showError() {
+  loader.classList.add('visually-hidden');
+  Notiflix.Notify.failure(
+    'Oops! Something went wrong! Try reloading the page!'
+  );
 }
