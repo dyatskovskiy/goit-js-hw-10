@@ -25,6 +25,7 @@ fetchBreeds()
 select.addEventListener('change', selectChangeHandler);
 
 function selectChangeHandler() {
+  catInfo.innerHTML = '';
   loader.classList.remove('visually-hidden');
   fetchCatByBreed(this.value)
     .then(info => renderCatCard(info))
