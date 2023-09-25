@@ -18,11 +18,11 @@ const catsSelect = new SlimSelect({
   },
 });
 
+select.addEventListener('change', selectChangeHandler);
+
 fetchBreeds()
   .then(breeds => renderCatSelectOptions(breeds))
   .catch(err => showError());
-
-select.addEventListener('change', selectChangeHandler);
 
 function selectChangeHandler() {
   catInfo.innerHTML = '';
