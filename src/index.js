@@ -28,7 +28,13 @@ function selectChangeHandler() {
   catInfo.innerHTML = '';
   loader.classList.remove('visually-hidden');
   fetchCatByBreed(this.value)
-    .then(info => renderCatCard(info))
+    .then(info => {
+      if (info.length == 0) {
+        showNotificateEmpty();
+        return;
+      }
+      renderCatCard(info);
+    })
     .catch(err => showError());
 }
 
@@ -68,4 +74,9 @@ function showError() {
   Notiflix.Notify.failure(
     'Oops! Something went wrong! Try reloading the page!'
   );
+}
+
+function showNotificateEmpty() {
+  loader.classList.add('visually-hidden');
+  Notiflix.Notify.warning('There is no cat :(');
 }

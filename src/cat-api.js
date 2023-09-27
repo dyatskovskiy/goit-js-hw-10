@@ -14,6 +14,7 @@ export const fetchCatByBreed = function fetchCatByBreed(breedId) {
   return axios
     .get(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
     .then(response => {
+      console.log(response);
       if (response.status < 200 || response.status > 299) {
         throw new Error(response.statusCode);
       }
